@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Football Lab</title>
+  <style>
+    :root {
+      --arsenal-red: #EF0107;
+      --pl-purple: #3D195B;
+      --dark: #1a1a1a;
+      --light-gray: #f5f5f5;
+      --max-width: 1100px;
+    } 
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: rgb(255, 255, 255);
+      color: var(--dark);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      color: var(--arsenal-red);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 2rem;
+      background: linear-gradient(135deg, var(--light-gray), #ffffff);
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    .hero button {
+      padding: 0.8rem 1.6rem;
+      margin-right: 0.75rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .primary {
+      background: var(--arsenal-red);
+      color: white;
+    }
+
+    .secondary {
+      background: white;
+      border: 2px solid var(--arsenal-red);
+      color: var(--arsenal-red);
+    }
+
+    /* Sections */
+    section {
+      padding: 4rem 2rem;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: auto;
+    }
+
+    section h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      border-left: 5px solid var(--arsenal-red);
+      padding-left: 0.75rem;
+    }
+
+    /* Arsenal Match Lab */
+    .match-card {
+      background: var(--light-gray);
+      padding: 2rem;
+      border-radius: 10px;
+    }
+
+    /* Ratings Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    /* Simulator */
+    .simulator {
+      background: var(--light-gray);
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 500px;
+    }
+
+    .simulator select, .simulator button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* Articles */
+    .articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .article-card {
+      border: 1px solid #e0e0e0;
+      padding: 1.5rem;
+      border-radius: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      background: var(--dark);
+      color: white;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: white;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+  <img src="data:image/png;base64,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" alt="Arsenal Logo" width="32">
+  <h1>🧪 The Football Lab</h1>
+</div>
+  <nav>
+    <a href="ArsenalHistory.html">Arsenal History</a>
+    <a href="PremierLeagueTable.html">Premier League Table</a>
+    <a href="TransferNews.html">Transfer News</a>
+    <a href="PlayerInfo.html">Player Bio</a>
+  </nav>
+</header>
+
+<div class="hero-inner">
+  <div>
+   <section>
+  <h3>🧪 What Is The Football Lab?</h3>
+  <p>The Football Lab is a football blog focused on Arsenal and the Premier League. With various opinions, tactics, ratings, transfer news and a match simulator.</p>
+</section>
+  </div>
+  <div>
+    <img src="data:image/png;base64,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">
+  </div>
+</div>
+
+<section>
+  <h3>🔴 Arsenal Match Lab</h3>
+  <div class="match-card">
+    <h4>Relive The 10 Best Wins of The Season</h4>
+    <p><strong>League Position:</strong> 1st</p>
+    <p><strong>Player of the Season:</strong> Declan Rice </p>
+    <a href="Top10PremWins.html">Read Full Analysis</a>
+  </div>
+</section>
+
+<section>
+  <h3>⭐ Player Ratings – 25/26 Season</h3>
+
+  <label for="positionFilter">Position Group:</label>
+  <select id="positionFilter">
+    <option value="all">All Players</option>
+    <option value="goalkeeper">Goalkeepers</option>
+    <option value="defender">Defenders</option>
+    <option value="midfielder">Midfielders</option>
+    <option value="attacker">Attackers</option>
+  </select>
+
+  <table>
+    <tr>
+      <th>Player</th>
+      <th>Lab Rating</th>
+      <th>Fan Avg</th>
+    </tr>
+
+    <tr data-position="goalkeeper">
+      <td>Kepa Arrizabalaga</td>
+      <td>7.25</td>
+      <td>7.5</td>
+    </tr>
+    <tr data-position="goalkeeper">
+      <td>David Raya</td>
+      <td>7.21</td>
+      <td>9.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Piero Hincapie</td>
+      <td>7.07</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Riccardo Calafiori</td>
+      <td>7.15</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>William Saliba</td>
+      <td>7.17</td>
+      <td>9.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Gabriel Magalhães</td>
+      <td>7.32</td>
+      <td>9.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Jurrien Timber</td>
+      <td>7.26</td>
+      <td>8.5</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Ben White</td>
+      <td>6.80</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="defender">
+      <td>Cristhian Mosquera</td>
+      <td>6.82</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Christian Norgaard</td>
+      <td>6.34</td>
+      <td>6.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Declan Rice</td>
+      <td>7.56</td>
+      <td>9.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Martin Zubimendi</td>
+      <td>7.20</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Myles Lewis-Skelly</td>
+      <td>7.02</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Mikel Merino</td>
+      <td>6.93</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Eberechi Eze</td>
+      <td>6.97</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="midfielder">
+      <td>Martin Ødegaard</td>
+      <td>7.00</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Max Dowman</td>
+      <td>6.72</td>
+      <td>7.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Bukayo Saka</td>
+      <td>7.52</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Viktor Gyökeres</td>
+      <td>6.82</td>
+      <td>8.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Kai Havertz</td>
+      <td>6.70</td>
+      <td>7.5</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Gabriel Martinelli</td>
+      <td>6.52</td>
+      <td>6.5</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Gabriel Jesus</td>
+      <td>7.02</td>
+      <td>5.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Ethan Nwaneri</td>
+      <td>6.34</td>
+      <td>6.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Noni Madueke</td>
+      <td>6.72</td>
+      <td>6.0</td>
+    </tr>
+    <tr data-position="attacker">
+      <td>Leandro Trossard</td>
+      <td>7.12</td>
+      <td>7.0</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h3>⚽ Match Simulation Lab</h3>
+  <div class="simulator">
+    <label>Home Team</label><br />
+    <select id="teamA"></select><br /><br />
+
+    <label>Away Team</label><br />
+    <select id="teamB"></select><br /><br />
+
+    <label>Home Tactical Style</label><br />
+    <select id="homeStyle">
+      <option>Balanced</option>
+      <option>High Press</option>
+      <option>Counter Attack</option>
+      <option>Possession</option>
+      <option>Low Block</option>
+    </select><br /><br />
+
+    <label>Away Tactical Style</label><br />
+    <select id="awayStyle">
+      <option>Balanced</option>
+      <option>High Press</option>
+      <option>Counter Attack</option>
+      <option>Possession</option>
+      <option>Low Block</option>
+    </select><br /><br />
+
+    <label>Home Form: <span id="homeFormValue">0</span></label>
+    <input type="range" id="homeForm" min="-2" max="2" step="1" value="0">
+
+    <br /><br />
+
+    <label>Away Form: <span id="awayFormValue">0</span></label>
+    <input type="range" id="awayForm" min="-2" max="2" step="1" value="0">
+
+    <br /><br />
+
+    <button class="primary" id="simulateBtn">Simulate Match</button>
+
+    <br /><br />
+    <button class="secondary" id="multiSimBtn">Simulate 5 Times</button>
+
+    <div id="result"></div>
+  </div>
+</section>
+
+<section>
+  <h3>📰 From The Lab</h3>
+  <div class="articles">
+
+  <a href="FootballTactics.html" class="article-card">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlvDqZM-yF9Gqy-4mAkoE5lFAXQkGGHck-MTKHFlpGpA&s=10" alt="Football tactics">
+  <h4>Is football becoming too tactical?</h4>
+  <p> How modern coaching is adapting and tactical systems are evolving.</p>
+</a>
+
+  <a href="MaverickPlayers.html" class="article-card">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9jj1l_Ze4-94t4J2rZjaSaFh_zMqqrOtfMgy_MvOFHQ&s=10" alt="Maverick players">
+    <h4>Why are modern teams afraid to sign maverick players?</h4>
+    <p>Have football clubs become too risk-averse in the transfer market?</p>
+  </a>
+
+  <a href="PlayerRatings.html" class="article-card">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1x53VlOxcaKQpfK682WXvXJkqjkwvVxUT4oT__f8sLQkMlxrX1YKemY5n&s=10" alt="Player ratings">
+    <h4>Are Player Ratings Ruining Football Debate?</h4>
+    <p>How stats and player ratings are influencing football discussions.</p>
+  </a>
+
+</div>
+</section>
+
+<footer>
+  <p>© The Football Lab</p>
+  <a href="#">Twitter</a> |
+  <a href="#">GitHub</a> |
+<a href="Contact.html">Contact</a>
+</footer>
+
+<script>
+  const teams = {
+    "Arsenal": { rating: 92, stars: "★★★★★" },
+    "Manchester City": { rating: 90, stars: "★★★★★" },
+    "Liverpool": { rating: 85, stars: "★★★★★" },
+    "Manchester United": { rating: 85, stars: "★★★★★" },
+    "Chelsea": { rating: 78, stars: "★★★★☆" },
+    "Tottenham": { rating: 74, stars: "★★★☆☆" },
+    "Newcastle": { rating: 76, stars: "★★★★☆" },
+    "Aston Villa": { rating: 82, stars: "★★★★☆" },
+    "Brighton": { rating: 79, stars: "★★★★☆" },
+    "Coventry": { rating: 72, stars: "★★★☆☆" },
+    "Crystal Palace": { rating: 75, stars: "★★★☆☆" },
+    "Fulham": { rating: 76, stars: "★★★★☆" },
+    "Brentford": { rating: 78, stars: "★★★★☆" },
+    "Everton": { rating: 75, stars: "★★★☆☆" },
+    "Bournemouth": { rating: 79, stars: "★★★★☆" },
+    "Hull": { rating: 68, stars: "★★☆☆☆" },
+    "Nottingham Forest": { rating: 74, stars: "★★★☆☆" },
+    "Leeds United": { rating: 75, stars: "★★★☆☆" },
+    "Ipswich": { rating: 68, stars: "★★☆☆☆" },
+    "Sunderland": { rating: 79, stars: "★★★★☆" }
+  };
+
+  const tacticalStyles = {
+    "Balanced": { xg: 0, possession: 0, shots: 0 },
+    "High Press": { xg: 0.2, possession: 3, shots: 2 },
+    "Counter Attack": { xg: 0.15, possession: -5, shots: 1 },
+    "Possession": { xg: 0.05, possession: 8, shots: 1 },
+    "Low Block": { xg: -0.1, possession: -8, shots: -2 }
+  };
+
+  const teamASelect = document.getElementById("teamA");
+  const teamBSelect = document.getElementById("teamB");
+
+  Object.keys(teams).forEach(team => {
+    teamASelect.innerHTML += `<option value="${team}">${team} ${teams[team].stars}</option>`;
+    teamBSelect.innerHTML += `<option value="${team}">${team} ${teams[team].stars}</option>`;
+  });
+
+  teamASelect.value = "Arsenal";
+  teamBSelect.value = "Liverpool";
+
+  document.getElementById("homeForm").addEventListener("input", function () {
+    document.getElementById("homeFormValue").innerText = this.value;
+  });
+
+  document.getElementById("awayForm").addEventListener("input", function () {
+    document.getElementById("awayFormValue").innerText = this.value;
+  });
+
+  function getSimulatorInputs() {
+    return {
+      homeTeam: document.getElementById("teamA").value,
+      awayTeam: document.getElementById("teamB").value,
+      homeForm: Number(document.getElementById("homeForm").value),
+      awayForm: Number(document.getElementById("awayForm").value),
+      homeStyle: document.getElementById("homeStyle").value,
+      awayStyle: document.getElementById("awayStyle").value
+    };
+  }
+
+  function runSimulation(inputs) {
+    function explainResult(result) {
+  let winnerText;
+
+  if (result.homeGoals > result.awayGoals) {
+    winnerText = `${result.homeTeam} won because they created more danger in attack and used their home advantage well.`;
+  } else if (result.awayGoals > result.homeGoals) {
+    winnerText = `${result.awayTeam} won because they were more clinical and overcame the away disadvantage.`;
+  } else {
+    winnerText = `The match ended level because both teams produced a similar attacking output.`;
+  }
+
+  let statReason;
+
+  if (result.homeXG > result.awayXG + 0.4) {
+    statReason = `${result.homeTeam} had the stronger xG, suggesting they created better chances.`;
+  } else if (result.awayXG > result.homeXG + 0.4) {
+    statReason = `${result.awayTeam} had the stronger xG, suggesting they created better chances.`;
+  } else {
+    statReason = `The xG was close, so the match was decided by finishing and small moments.`;
+  }
+
+  return `${winnerText} ${statReason}`;
+}
+
+const HOME_XG_BONUS = 0.08;
+const HOME_RATING_BONUS = 1;
+const FORM_RATING_BONUS = 2;
+const FORM_XG_BONUS = 0.1;
+const RATING_IMPACT = 35;
+const baseXG = 1.2;
+
+const homeRating =
+  teams[inputs.homeTeam].rating +
+  HOME_RATING_BONUS +
+  inputs.homeForm * FORM_RATING_BONUS;
+
+const awayRating =
+  teams[inputs.awayTeam].rating +
+  inputs.awayForm * FORM_RATING_BONUS;
+
+let homeXG =
+  baseXG +
+  (homeRating - awayRating) / RATING_IMPACT +
+  HOME_XG_BONUS +
+  inputs.homeForm * FORM_XG_BONUS +
+  tacticalStyles[inputs.homeStyle].xg +
+  Math.random();
+
+let awayXG =
+  baseXG +
+  (awayRating - homeRating) / RATING_IMPACT +
+  inputs.awayForm * FORM_XG_BONUS +
+  tacticalStyles[inputs.awayStyle].xg +
+  Math.random();
+
+    homeXG = Math.max(0.2, homeXG);
+    awayXG = Math.max(0.2, awayXG);
+
+    const homeGoals = Math.max(0, Math.round(homeXG + Math.random() - 0.5));
+    const awayGoals = Math.max(0, Math.round(awayXG + Math.random() - 0.5));
+
+    let homeWinProb = Math.round(50 + (homeRating - awayRating) * 0.7);
+    homeWinProb = Math.min(Math.max(homeWinProb, 10), 90);
+
+    let homePossession =
+      50 +
+      Math.round((homeRating - awayRating) / 3) +
+      tacticalStyles[inputs.homeStyle].possession -
+      tacticalStyles[inputs.awayStyle].possession;
+
+    homePossession = Math.min(Math.max(homePossession, 20), 70);
+
+    const awayPossession = 100 - homePossession;
+
+    const homeShots = Math.max(
+      1,
+      Math.round(homeXG * 6 + tacticalStyles[inputs.homeStyle].shots + Math.random() * 3)
+    );
+
+    const awayShots = Math.max(
+      1,
+      Math.round(awayXG * 6 + tacticalStyles[inputs.awayStyle].shots + Math.random() * 3)
+    );
+
+    return {
+      ...inputs,
+      homeGoals,
+      awayGoals,
+      homeXG,
+      awayXG,
+      homePossession,
+      awayPossession,
+      homeShots,
+      awayShots,
+      homeShotsOnTarget: Math.max(0, Math.round(homeShots * 0.4)),
+      awayShotsOnTarget: Math.max(0, Math.round(awayShots * 0.4)),
+      homeBigChances: Math.max(0, Math.round(homeXG)),
+      awayBigChances: Math.max(0, Math.round(awayXG)),
+      homeWinProb
+    };
+  }
+
+  function createResultCard(result) {
+    return `
+      <div class="result-card">
+        <div class="scoreline">
+          ${result.homeTeam} ${result.homeGoals} – ${result.awayGoals} ${result.awayTeam}
+        </div>
+
+        <div class="stat-row"><span>xG</span><strong> ${result.homeXG.toFixed(2)} – ${result.awayXG.toFixed(2)}</strong></div>
+        <div class="stat-row"><span>Possession</span><strong> ${result.homePossession}% – ${result.awayPossession}%</strong></div>
+        <div class="stat-row"><span>Shots</span><strong> ${result.homeShots} – ${result.awayShots}</strong></div>
+        <div class="stat-row"><span>Shots on Target</span><strong> ${result.homeShotsOnTarget} – ${result.awayShotsOnTarget}</strong></div>
+        <div class="stat-row"><span>Big Chances</span><strong> ${result.homeBigChances} – ${result.awayBigChances}</strong></div>
+        <div class="stat-row"><span>Home Win Probability</span><strong> ${result.homeWinProb}%</strong></div>
+
+        <p style="font-size:0.85rem; color:#555; margin-top:1rem;">
+          Simulator uses team rating, home advantage, form, and tactical style.
+        </p>
+      </div>
+    `;
+  }
+
+  function simulateMatch() {
+    const inputs = getSimulatorInputs();
+    const resultDiv = document.getElementById("result");
+
+    if (inputs.homeTeam === inputs.awayTeam) {
+      resultDiv.innerHTML = "<p>Please choose two different teams.</p>";
+      return;
+    }
+
+    const result = runSimulation(inputs);
+    resultDiv.innerHTML = createResultCard(result);
+  }
+
+  function simulateFiveTimes() {
+    const inputs = getSimulatorInputs();
+    const resultDiv = document.getElementById("result");
+
+    if (inputs.homeTeam === inputs.awayTeam) {
+      resultDiv.innerHTML = "<p>Please choose two different teams.</p>";
+      return;
+    }
+
+    let allResults = "";
+
+    for (let i = 1; i <= 5; i++) {
+      const result = runSimulation(inputs);
+      allResults += `<h4 style="margin-top:1.5rem;">Simulation ${i}</h4>`;
+      allResults += createResultCard(result);
+    }
+
+    resultDiv.innerHTML = allResults;
+  }
+
+  document.getElementById("simulateBtn").addEventListener("click", simulateMatch);
+  document.getElementById("multiSimBtn").addEventListener("click", simulateFiveTimes);
+
+  document.getElementById("positionFilter").addEventListener("change", function () {
+  const selectedPosition = this.value;
+  const playerRows = document.querySelectorAll("tr[data-position]");
+
+  playerRows.forEach(row => {
+    if (selectedPosition === "all" || row.dataset.position === selectedPosition) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});
+</script>
+</body>
+</html>
